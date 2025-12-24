@@ -1,20 +1,19 @@
 import requests
 
-# Passo 1: Pegar o valor do Dólar agora de uma API gratuita
+# 1. Busca a cotação real (como você já aprendeu)
 url = "https://economia.awesomeapi.com.br/last/USD-BRL"
-resposta = requests.get(url)
-dados = resposta.json()
+dados = requests.get(url).json()
+cotacao = float(dados['USDBRL']['bid'])
 
-# Passo 2: Extrair apenas o valor numérico (o preço de venda)
-cotacao_dolar = float(dados['USDBRL']['bid'])
+print(f"--- DÓLAR AGORA: R$ {cotacao:.2f} ---")
 
-print("=== CONVERSOR EM TEMPO REAL ===")
-print(f"Cotação atual do Dólar: R$ {cotacao_dolar:.2f}")
+# 2. O seu critério de "grana"
+preco_limite = float(input("Até quanto você aceita pagar pelo Dólar? R$ "))
 
-# Passo 3: Lógica que você já conhece (input e cálculo)
-reais = float(input("Quanto você tem na carteira? R$ "))
-dolares = reais / cotacao_dolar
-
-print("-" * 30)
-print(f"Com R$ {reais:.2f} você pode comprar US$ {dolares:.2f}")
-print("-" * 30)
+# 3. A Lógica de Decisão (O coração do projeto)
+if cotacao <= preco_limite:
+    print("\n✅ OPORTUNIDADE: O preço está abaixo do seu limite!")
+    print(f"Compre agora! Você está economizando R$ {preco_limite - cotacao:.2f} por dólar.")
+else:
+    print("\n❌ CILADA: O preço está muito alto!")
+    print(f"Aguarde. O dólar está R$ {cotacao - preco_limite:.2f} acima do que você quer pagar.")
